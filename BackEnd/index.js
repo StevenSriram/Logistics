@@ -65,6 +65,6 @@ function compareAlgorithms(items, binCapacity) {
 }
 
 // Example usage
-const items = [7, 5, 6, 2, 3, 8, 1];
-const binCapacity = 10;
+const items = [2,2,3,3,3,3,4,4,4,6,7,7];
+const binCapacity = 12;
 compareAlgorithms(items, binCapacity);
