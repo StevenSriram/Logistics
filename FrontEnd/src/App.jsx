@@ -1,11 +1,21 @@
 import React from 'react'
 import Header from './components/Header'
+import Home from './components/Home'
+
+import './index.css'
+import About from './components/About'
+import Contact from './components/Contact'
+import Footer from './components/Footer'
 
 const App = () => {
   return (
     <>
       <Header />
-      {/* <h1 className='bg-secondary h-100 w-100 text-center p-3'>Hello, World!</h1> */}
+      <Home />
+      <About />
+
+      <Contact />
+      <Footer />
     </>
   )
 }
