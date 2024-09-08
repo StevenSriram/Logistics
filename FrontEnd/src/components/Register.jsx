@@ -1,21 +1,26 @@
-// Register.jsx
 import React, { useState } from 'react';
+import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [user, setUser] = useState({ name: "", email: "", pass: "" });
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle registration logic here
-    if (password !== confirmPassword) {
-      alert('Passwords do not match');
-      return;
+    
+    try {
+      const res = await axios.post('http://localhost:5000/api/register', user)
+      setUser({ name: "", email: "", pass: "" })
+      window.alert(res.data.msg)     
+    } 
+    catch (err) {
+      console.error(err)
     }
-    console.log('Email:', email);
-    console.log('Password:', password);
   };
 
   return (
@@ -27,35 +32,38 @@ const Register = () => {
               <h5 className="card-title text-center mb-4">Register</h5>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
+                  <label htmlFor="name" className="form-label">Name</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    id="name"
+                    name="name"
+                    value={user.name}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
                   <label htmlFor="email" className="form-label">Email address</label>
                   <input
                     type="email"
                     className="form-control"
                     id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    name="email"
+                    value={user.email}
+                    onChange={handleChange}
                     required
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="password" className="form-label">Password</label>
+                  <label htmlFor="pass" className="form-label">Password</label>
                   <input
                     type="password"
                     className="form-control"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    id="pass"
+                    name="pass"
+                    value={user.pass}
+                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -64,7 +72,7 @@ const Register = () => {
             </div>
           </div>
           <p className="text-center mt-3">
-            Already have an account? <a href="/login">Login</a>
+            Already have an account? <Link to="/login">Login</Link>
           </p>
         </div>
       </div>

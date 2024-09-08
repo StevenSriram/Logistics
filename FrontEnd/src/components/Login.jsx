@@ -1,16 +1,27 @@
 // Login.jsx
 import React, { useEffect, useState } from 'react';
+import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [user, setUser] = useState({email: "", pass: ""});
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Handle login logic here
-    console.log('Email:', email);
-    console.log('Password:', password);
+  const handleChange = (e) => {
+    setUser({...user, [e.target.name]: e.target.value})
+  }
+
+  const handleSubmit = async (e) => {
+    try {
+      e.preventDefault();
+      const res = await axios.post('http://localhost:5000/api/login', 
+                                      user, {withCredentials: true})
+      setUser({email: "", pass: ""})
+      window.alert(res.data.msg)     
+    }
+    catch(err) {
+      console.error(err)
+    }
   };
 
   return (
@@ -27,19 +38,21 @@ const Login = () => {
                     type="email"
                     className="form-control"
                     id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    name="email"
+                    value={user.email}
+                    onChange={handleChange}
                     required
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="password" className="form-label">Password</label>
+                  <label htmlFor="pass" className="form-label">Password</label>
                   <input
                     type="password"
                     className="form-control"
-                    id="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    id="pass"
+                    name="pass"
+                    value={user.pass}
+                    onChange={handleChange}
                     required
                   />
                 </div>
@@ -48,7 +61,7 @@ const Login = () => {
             </div>
           </div>
           <p className="text-center mt-3">
-            Don't have an account? <a href="/register">Register</a>
+            Don't have an account? <Link to="/register">Register</Link>
           </p>
         </div>
       </div>
