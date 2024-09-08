@@ -1,6 +1,8 @@
 import React from 'react';
+import logistics from '../images/logistics.webp'
 
 const About = () => {
+  
   return (
     <div className="about" id="about">
       <div className="container">
@@ -8,7 +10,7 @@ const About = () => {
         <div className="row">
           <div className="col-md-6">
             <div className="card">
-              <img src="./images/logistics.jpg" alt="Logistics" />
+              <img src={logistics} alt="Logistics" />
             </div>
           </div>
           <div className="col-md-6">
