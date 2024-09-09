@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const userRouter = express.Router();
 
@@ -12,11 +13,37 @@ userRouter.get('/', async (req, res) => {
     res.json(items)
 });
 
+// MiddleWare for userVerifiaction
+const verifyUser = (req, res, next) => {
+    // get token Stored in Cookies
+    const token = req.cookies.token
+    if(!token)
+    {
+        return res.json({msg: "Token NOT Available"})
+    }
+    else
+    {
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if(err)
+                return res.json({msg: "WRONG Token"})
+
+            // return back to welcome Route
+            next()
+        })
+    }
+}
+
+// user Authorization GET
+userRouter.get("/welcome", verifyUser, (req,res) => {
+    
+    return res.json({msg: "Access Grant"})
+})
+
 
 // user login POST
 userRouter.post("/login" , async (req,res) => {
     try {
-        console.log(req.body)
+        console.log(req.body) 
         const {email, pass} = req.body
 
         // check for user Exits
@@ -25,8 +52,17 @@ userRouter.post("/login" , async (req,res) => {
         {
            return res.json({msg: "Invalid UserName and Passsword"})
         }
-
-        // Json Web Token
+        else
+        {
+            // Json Web Token
+            const token = jwt.sign({ userId: userExits._id },
+                process.env.JWT_SECRET ,
+                { expiresIn: '1d'}
+            )
+            res.cookie('token', token)
+           return res.json({msg: "Login Success"})
+        }
+        
         
     } 
     catch (err) {

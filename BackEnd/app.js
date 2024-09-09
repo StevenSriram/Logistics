@@ -18,6 +18,7 @@ app.use(cookieParser())
 // Cross Origin Resource Sharing
 app.use(cors({
     origin: "http://localhost:5500",
+    methods: ["GET", "POST"],
     credentials: true
 }))
 // routes handler
