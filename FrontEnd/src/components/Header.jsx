@@ -1,23 +1,45 @@
-import React from 'react'
+import {React, useContext}from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios'
+import {LoginContext} from '../contexts/LoginContext'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
-import 'bootstrap/dist/js/bootstrap.bundle.min'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+
+// import {BsFillEnvelopeFill} from 'react-icons/bs'
+import { PiTruckFill } from "react-icons/pi";
 
 const Header = () => {
+  // use the Context
+  const {login, setLogin} = useContext(LoginContext)
   const navigate = useNavigate()
+
+  const handleLogout = async () => {
+    try 
+    {
+        const res = await axios.post('http://localhost:5000/api/logout', {}, { withCredentials: true });
+        setLogin(false);
+        window.alert(res.data.msg);
+        navigate('/');
+    } 
+    catch (err) 
+    {
+        console.error('Error logging out:', err);
+        window.alert('Error logging out. Please try again.');
+    }
+};
 
   return (
     <>
        <nav className="navbar navbar-expand-md bg-body-tertiary fixed-top" id='navbar'>
         <div className="container-fluid">
-        <Link to="/" className="navbar-brand">Logistics</Link>
+        <Link to="/" className="navbar-brand"> Logistics</Link>
           <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
             <span className="navbar-toggler-icon"></span>
           </button>
           <div className="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
             <div className="offcanvas-header" style={{borderBottom: '2px solid aqua'}}>
-              <h5 className="offcanvas-title" id="offcanvasNavbarLabel">Logitics</h5>
+              <h5 className="offcanvas-title" id="offcanvasNavbarLabel"> Logistics <PiTruckFill style={{fontSize: "50px"}}/> </h5>
               <button type="button" className="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div className="offcanvas-body">
@@ -26,31 +48,40 @@ const Header = () => {
                   <Link className="nav-link active" aria-current="page" to="/">Home</Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">About</a>
+                  <Link className="nav-link" to="/about">About</Link>
                 </li>
                 <li className="nav-item dropdown">
-                  <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  <Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Transport
-                  </a>
+                  </Link>
                   <ul className="dropdown-menu">
-                    <li><a className="dropdown-item" href="#">Road</a></li>
-                    <li><a className="dropdown-item" href="#">Water</a></li>
+                    <li><Link className="dropdown-item" to="#">Road</Link></li>
+                    <li><Link className="dropdown-item" to="#">Water</Link></li>
                     {/* <li>
                       <hr className="dropdown-divider" />
                     </li> */}
-                    <li><a className="dropdown-item" href="#">Rail</a></li>
-                    <li><a className="dropdown-item" href="#">Air</a></li>
+                    <li><Link className="dropdown-item" to="#">Rail</Link></li>
+                    <li><Link className="dropdown-item" to="#">Air</Link></li>
                   </ul>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="#">Contact</a>
+                  <Link className="nav-link" to="#">Contact</Link>
                 </li>
               </ul>
               {/* <form className="d-flex mt-2" role="search">
                 <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
                 <button className="btn btn-outline-success" type="submit">Search</button>
               </form> */}
-              <button className="btn btn-outline-success mt-2" onClick={(e) => navigate('/login')}>Sign Up</button>
+               {
+                !login ? 
+                (<button className="btn btn-outline-success mt-2" onClick={(e) => navigate('/login')}>Sign Up</button>) :
+                (
+                  <>
+                    <button className="btn btn-outline-danger mt-2">Profile</button>
+                    <button className="btn btn-outline-warning" onClick={handleLogout}>Logout</button>
+                  </>
+                )
+               } 
 
             </div>
           </div>

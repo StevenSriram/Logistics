@@ -9,6 +9,7 @@ const UserModal = require('./modals/UserModal')
 
 // router
 const userRouter = require('./routes/userRouter')
+const adminRouter = require('./routes/adminRouter')
 
 const app = express();
 // JSON response
@@ -23,6 +24,7 @@ app.use(cors({
 }))
 // routes handler
 app.use('/api', userRouter)
+app.use('/admin', adminRouter)
 
 // Mongo DataBase Connection
 const url = process.env.MONGOOSE_URL

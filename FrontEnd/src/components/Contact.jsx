@@ -1,5 +1,7 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'aos/dist/aos.css';
+
 
 const Contact = () => {
   return (
@@ -28,7 +30,7 @@ const Contact = () => {
         </div>
 
         {/* Contact Information Section */}
-        <div className="col-md-4">
+        <div className="col-md-4" data-aos='fade-left' data-aos-duration='1500'>
           <div style={{boxShadow: '3px 3px #b2744c'}} className="contact-info text-bg-dark mt-5 p-3 rounded">
             <h4 style={{color: "cyan"}}>Contact Information</h4>
             <p><strong>Address:</strong> 123 Logistics Street, City, Country</p>

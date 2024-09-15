@@ -59,7 +59,7 @@ userRouter.post("/login" , async (req,res) => {
                 process.env.JWT_SECRET ,
                 { expiresIn: '1d'}
             )
-            res.cookie('token', token)
+            res.cookie('token', token , {httpOnly: true})
            return res.json({msg: "Login Success"})
         }
         
@@ -110,5 +110,10 @@ userRouter.post("/register" , async (req,res) => {
     }
 })
 
+// User logout POST
+userRouter.post('/logout', (req, res) => {
+    res.cookie('token', '', { httpOnly: true, maxAge: 0, path: '/' });
+    return res.status(200).json({ msg: 'Logged out successfully' });
+});
 
 module.exports = userRouter;

@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Login = () => {
+
   const [user, setUser] = useState({email: "", pass: ""});
   const navigate = useNavigate()
 
@@ -13,15 +14,20 @@ const Login = () => {
   }
 
   const handleSubmit = async (e) => {
+    
     try {
+      const form = document.querySelector('form')
+      form.classList.add('was-validated')
       e.preventDefault();
       const res = await axios.post('http://localhost:5000/api/login', 
                                       user, {withCredentials: true})
       setUser({email: "", pass: ""})
       window.alert(res.data.msg)  
 
-      if(res.data.msg === 'Login Success')  
-          navigate('/') 
+      if(res.data.msg === 'Login Success')
+      {
+        navigate('/') 
+      }  
     }
     catch(err) {
       console.error(err)
@@ -35,7 +41,7 @@ const Login = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title text-center mb-4">Login</h5>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} noValidate>
                 <div className="mb-3">
                   <label htmlFor="email" className="form-label">Email address</label>
                   <input
