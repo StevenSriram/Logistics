@@ -35,7 +35,7 @@ const verifyAdmin = (req, res, next) => {
 }
 
 // Admin Authorization GET
-adminRouter.get("/dashboard", verifyAdmin, (req,res) => {
+adminRouter.get("/verify", verifyAdmin, (req,res) => {
     
     return res.json({msg: "Access Grant", admin: req.admin})
 })
@@ -79,6 +79,8 @@ adminRouter.post("/register" , async (req,res) => {
     try 
     {
         const {name, email, pass} = req.body
+        if(!name || !email || !pass)
+            return res.json({msg: "Fill all Data"})
 
         // check for Admin already Exits
         const adminExists = await AdminModal.findOne({email})

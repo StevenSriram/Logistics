@@ -43,7 +43,7 @@ userRouter.get("/welcome", verifyUser, (req,res) => {
 // user login POST
 userRouter.post("/login" , async (req,res) => {
     try {
-        console.log(req.body) 
+        // console.log(req.body) 
         const {email, pass} = req.body
 
         // check for user Exits
@@ -76,7 +76,7 @@ userRouter.post("/login" , async (req,res) => {
 userRouter.post("/register" , async (req,res) => {
     try 
     {
-        console.log(req.body)
+        // console.log(req.body)
         const {name, email, pass} = req.body
 
         // check for user already Exits

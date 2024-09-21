@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, useNavigate } from 'react-router-dom';
@@ -8,6 +8,25 @@ import brand from '../images/brand.svg'
 const AdminRegister = () => {
   const [admin, setAdmin] = useState({ name: "", email: "", pass: "" });
   const navigate = useNavigate()
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.get('http://localhost:5000/admin/verify', { withCredentials: true });
+                
+                if (res.data.msg === "Access Grant") {
+                    window.alert(`${res.data.admin.name} = ${res.data.admin.email}`);
+                } else {
+                    // window.alert(res.data.msg);
+                    navigate('/admin/login')
+                }
+            } catch (err) {
+                console.error('Error fetching dashboard data', err);
+            }
+        };
+
+        fetchData();
+    }, []);
 
   const handleChange = (e) => {
     setAdmin({ ...admin, [e.target.name]: e.target.value });
@@ -19,7 +38,9 @@ const AdminRegister = () => {
     try {
       const res = await axios.post('http://localhost:5000/admin/register', admin)
       setAdmin({ name: "", email: "", pass: "" })
-      navigate('/admin/login')
+      window.alert(res.data.msg)
+      if(res.data.msg !== "Fill all Data")
+        navigate('/admin/dashboard')
     } 
     catch (err) {
       console.error(err)
