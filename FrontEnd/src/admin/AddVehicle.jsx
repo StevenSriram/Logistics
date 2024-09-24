@@ -1,0 +1,81 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+
+const AddVehicle = () => {
+    const [vehicleData, setVehicleData] = useState({
+        companyName: '',
+        vehicleType: '',
+        maxLoad: '',
+        rent: '',
+        photo: null,
+    });
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setVehicleData({ ...vehicleData, [name]: value });
+    };
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setVehicleData({ ...vehicleData, photo: file });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        
+        // Append vehicle data
+        formData.append('companyName', vehicleData.companyName);
+        formData.append('vehicleType', vehicleData.vehicleType);
+        formData.append('maxLoad', vehicleData.maxLoad);
+        formData.append('rent', vehicleData.rent);
+        
+        // Append the photo
+        formData.append('photo', vehicleData.photo);
+        
+        try {
+            await axios.post('http://localhost:5000/vehicle/add', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            alert('Vehicle added successfully!');
+            setVehicleData({
+                companyName: '',
+                vehicleType: '',
+                maxLoad: '',
+                rent: '',
+                photo: null,
+            });
+            document.querySelector('input[type=file]').value = ''; // Reset file input
+        } catch (error) {
+            alert('Error adding vehicle: ' + (error.response?.data?.message || error.message));
+        }
+    };
+
+    return (
+        <div className="mt-5">
+            <h1>Add Vehicle</h1>
+            <form onSubmit={handleSubmit} className="mb-4">
+                <div className="form-group mt-3">
+                    <input className="form-control" name="companyName" value={vehicleData.companyName} onChange={handleChange} placeholder="Company Name" required />
+                </div>
+                <div className="form-group mt-3">
+                    <input className="form-control" name="vehicleType" value={vehicleData.vehicleType} onChange={handleChange} placeholder="Vehicle Type" required />
+                </div>
+                <div className="form-group mt-3">
+                    <input className="form-control" name="maxLoad" value={vehicleData.maxLoad} onChange={handleChange} placeholder="Max Load (kg)" type="number" required />
+                </div>
+                <div className="form-group mt-3">
+                    <input className="form-control" name="rent" value={vehicleData.rent} onChange={handleChange} placeholder="Rent ($)" type="number" required />
+                </div>
+                <div className="form-group mt-3">
+                    <input className="form-control" type="file" onChange={handleFileChange} required />
+                </div>
+                <button type="submit" className="btn btn-primary mt-3">Add Vehicle</button>
+            </form>
+        </div>
+    );
+};
+
+export default AddVehicle;

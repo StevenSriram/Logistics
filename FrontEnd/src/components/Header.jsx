@@ -50,20 +50,27 @@ const Header = () => {
                 <li className="nav-item">
                   <Link className="nav-link" to="/about">About</Link>
                 </li>
+                
                 <li className="nav-item dropdown">
-                  <Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    Transport
-                  </Link>
-                  <ul className="dropdown-menu">
-                    <li><Link className="dropdown-item" to="#">Road</Link></li>
-                    <li><Link className="dropdown-item" to="#">Water</Link></li>
-                    {/* <li>
-                      <hr className="dropdown-divider" />
-                    </li> */}
-                    <li><Link className="dropdown-item" to="#">Rail</Link></li>
-                    <li><Link className="dropdown-item" to="#">Air</Link></li>
-                  </ul>
+                    <Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Transport
+                    </Link>
+                    <ul className="dropdown-menu">
+                        <li>
+                            <Link className="dropdown-item" to="/transport">Road</Link>
+                        </li>
+                        <li>
+                            <Link className="dropdown-item" to="/water">Water</Link>
+                        </li>
+                        <li>
+                            <Link className="dropdown-item" to="/rail">Rail</Link>
+                        </li>
+                        <li>
+                            <Link className="dropdown-item" to="/air">Air</Link>
+                        </li>
+                    </ul>
                 </li>
+
                 <li className="nav-item">
                   <Link className="nav-link" to="#">Contact</Link>
                 </li>

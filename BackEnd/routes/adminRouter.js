@@ -13,6 +13,16 @@ adminRouter.get('/', async (req, res) => {
     res.json(items)
 });
 
+// Get Vehicles
+adminRouter.get('/vehicles', (req,res) => {
+    
+})
+
+// Add Vehicle Details
+adminRouter.post('/addvehicle', (req,res) => {
+
+})
+
 // MiddleWare for AdminVerifiaction
 const verifyAdmin = (req, res, next) => {
     // get adminToken Stored in Cookies
@@ -73,46 +83,6 @@ adminRouter.post("/login" , async (req,res) => {
     }
 })
 
-
-// Admin register POST
-adminRouter.post("/register" , async (req,res) => {
-    try 
-    {
-        const {name, email, pass} = req.body
-        if(!name || !email || !pass)
-            return res.json({msg: "Fill all Data"})
-
-        // check for Admin already Exits
-        const adminExists = await AdminModal.findOne({email})
-        if(adminExists)
-        {
-           return res.json({msg: "Admin Already Exits"})
-        }
-
-        // hash Password for Security
-        const hashPass = await bcrypt.hash(pass, 10)
-
-        // create Mongoose Schema
-        const newAdmin = new AdminModal({
-            name,
-            email,
-            pass: hashPass
-        })
-
-        /* 
-            when insert __V: keeps track the Version of Document 
-        */
-        // insert into Modal
-        await newAdmin.save()
-        return res.status(201).json({msg: "Admin Registration Success"})
-    } 
-    catch (err) 
-    {
-        console.error(err)
-        return res.status(500).json({msg: "Error Registering Admin"})
-    }
-})
-
 // Admin logout POST
 adminRouter.post('/logout', (req, res) => {
     res.cookie('adminToken', '', { httpOnly: true, maxAge: 0, path: '/' });
@@ -120,3 +90,44 @@ adminRouter.post('/logout', (req, res) => {
 });
 
 module.exports = adminRouter;
+
+
+
+// Admin register POST
+// adminRouter.post("/register" , async (req,res) => {
+//     try 
+//     {
+//         const {name, email, pass} = req.body
+//         if(!name || !email || !pass)
+//             return res.json({msg: "Fill all Data"})
+
+//         // check for Admin already Exits
+//         const adminExists = await AdminModal.findOne({email})
+//         if(adminExists)
+//         {
+//            return res.json({msg: "Admin Already Exits"})
+//         }
+
+//         // hash Password for Security
+//         const hashPass = await bcrypt.hash(pass, 10)
+
+//         // create Mongoose Schema
+//         const newAdmin = new AdminModal({
+//             name,
+//             email,
+//             pass: hashPass
+//         })
+
+//         /* 
+//             when insert __V: keeps track the Version of Document 
+//         */
+//         // insert into Modal
+//         await newAdmin.save()
+//         return res.status(201).json({msg: "Admin Registration Success"})
+//     } 
+//     catch (err) 
+//     {
+//         console.error(err)
+//         return res.status(500).json({msg: "Error Registering Admin"})
+//     }
+// })

@@ -15,12 +15,14 @@ const Welcome = () => {
     useEffect(() => {
         // function to Fetch Data
         const fetchData = async () => {
+          document.body.style.paddingRight = 0
+
             const res = await axios.get('http://localhost:5000/api/welcome', 
                 {withCredentials: true})
                 if(res.data.msg == "Access Grant")
                     setLogin(true)
             window.alert(res.data.msg)
-            return () => {console.log('')}
+            return () => console.log('')
         }
 
         fetchData()

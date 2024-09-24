@@ -86,10 +86,13 @@ const AdminDashBoard = () => {
             {/* <!-- Sidebar content here --> */}
             <ul className="nav flex-column">
                 <li className="nav-item">
-                    <Link className="nav-link active" aria-current="page" href="#">Dashboard</Link>
+                    <Link className="nav-link active" aria-current="page" to='/admin/dashboard'>Dashboard</Link>
                 </li>
                 <li className="nav-item">
                     <Link className="nav-link" href="#">Profile</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to='/admin/add'>Add Vehicle</Link>
                 </li>
                 <li className="nav-item">
                     <Link className="nav-link" href="#">Settings</Link>
@@ -110,6 +113,9 @@ const AdminDashBoard = () => {
                 </li>
                 <li className="nav-item">
                     <Link className="nav-link" href="#">Profile</Link>
+                </li>
+                <li className="nav-item">
+                    <Link className="nav-link" to='/admin/add'>Add Vehicle</Link>
                 </li>
                 <li className="nav-item">
                     <Link className="nav-link" href="#">Settings</Link>
