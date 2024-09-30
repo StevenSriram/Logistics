@@ -30,7 +30,7 @@ app.use('/admin', adminRouter)
 app.use('/vehicle', vehicleRouter)
 
 // Static files for uploads
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static('uploads'));
 
 // Mongo DataBase Connection
 const url = process.env.MONGOOSE_URL

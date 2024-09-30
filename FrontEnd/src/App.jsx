@@ -13,6 +13,8 @@ import AdminLogin from './admin/AdminLogin'
 import AdminDashBoard from './admin/AdminDashBoard'
 import AddVehicle from './admin/AddVehicle'
 import Transport from './components/Transport'
+import Booking from './components/Booking'
+import Map from './components/Map'
 
 const App = () => {
   return (
@@ -25,6 +27,9 @@ const App = () => {
             <Route path='/login' element={<Login />}></Route>
             <Route path='/register' element={<Register />}></Route>
             <Route path='/transport' element={<Transport />}></Route>
+            <Route path='/booking' element={<Booking />}></Route>
+            <Route path='/map' element={<Map />}></Route>
+            
             <Route path='/admin/login' element={<AdminLogin />}></Route>
             <Route path='/admin/dashboard' element={<AdminDashBoard />}></Route>
             <Route path='/admin/add' element={<AddVehicle />}></Route>

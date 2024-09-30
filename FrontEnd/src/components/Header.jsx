@@ -84,7 +84,7 @@ const Header = () => {
                 (<button className="btn btn-outline-success mt-2" onClick={(e) => navigate('/login')}>Sign Up</button>) :
                 (
                   <>
-                    <button className="btn btn-outline-danger mt-2">Profile</button>
+                    <button className="btn btn-outline-danger mt-2 me-2 py-2">Profile</button>
                     <button className="btn btn-outline-warning" onClick={handleLogout}>Logout</button>
                   </>
                 )

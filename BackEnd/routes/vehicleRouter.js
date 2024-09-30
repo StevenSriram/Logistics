@@ -10,35 +10,37 @@ const vehicleRouter = express.Router();
 // Set up storage for Multer
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        const dir = path.join(__dirname, '../uploads'); // Directory for uploaded files
-        cb(null, dir);
+        cb(null, 'uploads/');
     },
     filename: (req, file, cb) => {
-        cb(null, file.originalname); // Keep the original filename
+        const timestamp = Date.now();
+        const originalName = file.originalname.replace(/\s+/g, '_');
+        cb(null, `${timestamp}-${originalName}`);
     }
 });
 
 // Initialize the upload variable
-const upload = multer({ storage });
+const upload = multer({ storage: storage });
+
 
 // Add a new vehicle
 vehicleRouter.post('/add', upload.single('photo'), async (req, res) => {
     try {
-        const { companyName, vehicleType, maxLoad, rent } = req.body;
+        const { companyName, vehicleType, maxLoad, rentPerKilometer } = req.body;
+        const imageUrl = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
 
         const vehicle = new VehicleModal({
             companyName,
             vehicleType,
             maxLoad,
-            rent,
-            photo: req.file.path // Store the path of the uploaded file
+            rentPerKilometer,
+            imageURL: imageUrl
         });
 
         await vehicle.save();
-        res.status(201).json({ msg: "Vehicle added successfully", vehicle });
+        res.status(201).json({ message: 'Vehicle added successfully', vehicle });
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ msg: "Error occurred", error: error.message });
+        res.status(500).json({ error: 'Error adding vehicle' });
     }
 });
 
@@ -50,6 +52,22 @@ vehicleRouter.get('/', async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).json({ msg: "Error occurred", error: error.message });
+    }
+});
+
+// Get Vehicle by ID
+vehicleRouter.get('/:id', async (req, res) => {
+    try 
+    {
+        const vehicle = await VehicleModal.findById(req.params.id);
+        if (!vehicle) 
+            return res.status(404).send('Vehicle not found');
+
+        res.json(vehicle);
+    } 
+    catch (error) 
+    {
+        res.status(500).send('Server Error');
     }
 });
 
