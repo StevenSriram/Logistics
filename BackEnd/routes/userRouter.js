@@ -1,13 +1,74 @@
 const express = require('express');
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const stripe = require('stripe')(process.env.SECRET_KEY)
 
 const userRouter = express.Router();
 
 // mongoose Modal
 const UserModal = require('../modals/UserModal')
 
+// userRouter.post("/checkout-session", async (req, res) => {
+//     const {company, image, totalAmount} = req.body
+//     // console.log(company, image, totalAmount)
+
+//     const lineItems =[
+//         {price_data: {
+//             currency: "usd",
+//             product_data: {
+//                 name: company,
+//                 images: image,
+//             },
+//             unit_amount: Math.round(totalAmount * 100)
+//         }}
+//     ]
+
+//     const session = await stripe.checkout.sessions.create({
+//         payment_method_types: ["card"],
+//         line_items: lineItems,
+//         mode: 'payment',
+//         success_url: "http:/localhost:5500/",
+//         cancel_url: "http:/localhost:5500/booking"
+//     })
+//     return res.json({id: session.id})
+// })
+
 // user GET
+
+userRouter.post("/checkout-session", async (req, res) => {
+    const { company, image, totalAmount } = req.body;
+
+    const lineItems = [
+        {
+            price_data: {
+                currency: "usd",
+                product_data: {
+                    name: company,
+                    images: [image], 
+                },
+                unit_amount: Math.round(totalAmount * 100),
+            },
+            quantity: 1, 
+        }
+    ];
+
+    try {
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ["card"],
+            line_items: lineItems,
+            mode: 'payment',
+            success_url: "http://localhost:5500/",
+            cancel_url: "http://localhost:5500/booking",
+        });
+
+        return res.json({ id: session.id });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+
 userRouter.get('/', async (req, res) => {
     const items = await UserModal.find()
     res.json(items)

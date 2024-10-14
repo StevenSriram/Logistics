@@ -50,8 +50,11 @@ const Header = () => {
                 <li className="nav-item">
                   <Link className="nav-link" to="/about">About</Link>
                 </li>
+                <li className="nav-item">
+                  <Link className="nav-link" to="/transport">Transport</Link>
+                </li>
                 
-                <li className="nav-item dropdown">
+                {/* <li className="nav-item dropdown">
                     <Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         Transport
                     </Link>
@@ -69,7 +72,7 @@ const Header = () => {
                             <Link className="dropdown-item" to="/air">Air</Link>
                         </li>
                     </ul>
-                </li>
+                </li> */}
 
                 <li className="nav-item">
                   <Link className="nav-link" to="#">Contact</Link>

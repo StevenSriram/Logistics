@@ -20,8 +20,10 @@ const Welcome = () => {
             const res = await axios.get('http://localhost:5000/api/welcome', 
                 {withCredentials: true})
                 if(res.data.msg == "Access Grant")
+                {
                     setLogin(true)
-            window.alert(res.data.msg)
+                    // window.alert(res.data.msg)
+                }
             return () => console.log('')
         }
 

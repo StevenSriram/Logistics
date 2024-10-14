@@ -28,9 +28,20 @@ const BookingPage = () => {
                     <h2>{booking.companyName}</h2>
                     <p className="text-muted">{booking.maxLoad} kg</p>
                     <h4 className="text-success">${booking.rentPerKilometer} /Km</h4>
-                    <button className="btn btn-primary btn-lg mt-3" onClick={(e) => navigate('/map')}>
+
+                    <button
+                        className="btn btn-primary btn-lg mt-3"
+                        onClick={() => navigate('/map', {
+                            state: {
+                                rentPerKm: booking.rentPerKilometer,
+                                company: booking.companyName,
+                                image: booking.imageURL
+                              }
+                        })}
+                        >
                         Route
                     </button>
+
                 </div>
             </div>
         </div>
