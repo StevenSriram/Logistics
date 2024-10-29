@@ -33,7 +33,7 @@ app.use('/vehicle', vehicleRouter)
 app.use('/uploads', express.static('uploads'));
 
 // Mongo DataBase Connection
-const url = process.env.MONGOOSE_URL
+const url="mongodb+srv://suriyaes:12345@logic.xhtqo.mongodb.net/test?retryWrites=true&w=majority";
 mongoose.connect(url)
 .then(() => { console.log("DataBase Connected" )})
 .catch(() => console.error("Error Occured"))
