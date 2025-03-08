@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
-import axios from 'axios'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Link, useNavigate } from "react-router-dom";
+
+const API_URL = "http://localhost:5000";
 
 const Register = () => {
   const [user, setUser] = useState({ name: "", email: "", pass: "" });
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
@@ -13,15 +15,14 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     try {
-      const res = await axios.post('http://localhost:5000/api/register', user)
-      setUser({ name: "", email: "", pass: "" })
-      navigate('/login')
-      window.alert(res.data.msg)     
-    } 
-    catch (err) {
-      console.error(err)
+      const res = await axios.post(API_URL + "/api/register", user);
+      setUser({ name: "", email: "", pass: "" });
+      navigate("/login");
+      window.alert(res.data.msg);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -34,7 +35,9 @@ const Register = () => {
               <h5 className="card-title text-center mb-4">Register</h5>
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="name" className="form-label">Name</label>
+                  <label htmlFor="name" className="form-label">
+                    Name
+                  </label>
                   <input
                     type="text"
                     className="form-control"
@@ -46,7 +49,9 @@ const Register = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email address</label>
+                  <label htmlFor="email" className="form-label">
+                    Email address
+                  </label>
                   <input
                     type="email"
                     className="form-control"
@@ -58,7 +63,9 @@ const Register = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="pass" className="form-label">Password</label>
+                  <label htmlFor="pass" className="form-label">
+                    Password
+                  </label>
                   <input
                     type="password"
                     className="form-control"
@@ -69,7 +76,9 @@ const Register = () => {
                     required
                   />
                 </div>
-                <button type="submit" className="btn btn-primary w-100">Register</button>
+                <button type="submit" className="btn btn-primary w-100">
+                  Register
+                </button>
               </form>
             </div>
           </div>

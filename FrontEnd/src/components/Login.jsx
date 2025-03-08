@@ -1,36 +1,35 @@
 // Login.jsx
-import React, { useEffect, useState } from 'react';
-import axios from 'axios'
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { Link, useNavigate } from "react-router-dom";
+
+const API_URL = "http://localhost:5000";
 
 const Login = () => {
-
-  const [user, setUser] = useState({email: "", pass: ""});
-  const navigate = useNavigate()
+  const [user, setUser] = useState({ email: "", pass: "" });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
-    setUser({...user, [e.target.name]: e.target.value})
-  }
+    setUser({ ...user, [e.target.name]: e.target.value });
+  };
 
   const handleSubmit = async (e) => {
-    
     try {
-      const form = document.querySelector('form')
-      form.classList.add('was-validated')
+      const form = document.querySelector("form");
+      form.classList.add("was-validated");
       e.preventDefault();
-      const res = await axios.post('http://localhost:5000/api/login', 
-                                      user, {withCredentials: true})
-      setUser({email: "", pass: ""})
-      window.alert(res.data.msg)  
+      const res = await axios.post(API_URL + "/api/login", user, {
+        withCredentials: true,
+      });
+      setUser({ email: "", pass: "" });
+      window.alert(res.data.msg);
 
-      if(res.data.msg === 'Login Success')
-      {
-        navigate('/') 
-      }  
-    }
-    catch(err) {
-      console.error(err)
+      if (res.data.msg === "Login Success") {
+        navigate("/");
+      }
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -43,7 +42,9 @@ const Login = () => {
               <h5 className="card-title text-center mb-4">Login</h5>
               <form onSubmit={handleSubmit} noValidate>
                 <div className="mb-3">
-                  <label htmlFor="email" className="form-label">Email address</label>
+                  <label htmlFor="email" className="form-label">
+                    Email address
+                  </label>
                   <input
                     type="email"
                     className="form-control"
@@ -55,7 +56,9 @@ const Login = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="pass" className="form-label">Password</label>
+                  <label htmlFor="pass" className="form-label">
+                    Password
+                  </label>
                   <input
                     type="password"
                     className="form-control"
@@ -66,7 +69,9 @@ const Login = () => {
                     required
                   />
                 </div>
-                <button type="submit" className="btn btn-primary w-100">Login</button>
+                <button type="submit" className="btn btn-primary w-100">
+                  Login
+                </button>
               </form>
             </div>
           </div>

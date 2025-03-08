@@ -1,18 +1,20 @@
 // src/Map.jsx
-import React, { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import {loadStripe} from '@stripe/stripe-js';
-import axios from 'axios'
+import React, { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { loadStripe } from "@stripe/stripe-js";
+import axios from "axios";
 
-import { MapContainer, TileLayer } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
-import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
-import L from 'leaflet';
-import 'leaflet-routing-machine';
+const API_URL = "http://localhost:5000";
 
-import markerIcon from 'leaflet/dist/images/marker-icon.png';
-import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
-import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import { MapContainer, TileLayer } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
+import L from "leaflet";
+import "leaflet-routing-machine";
+
+import markerIcon from "leaflet/dist/images/marker-icon.png";
+import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
+import markerShadow from "leaflet/dist/images/marker-shadow.png";
 
 // Setup default Leaflet marker icons
 const DefaultIcon = L.icon({
@@ -41,7 +43,6 @@ const Map = () => {
   const routingControlRef = useRef(null);
   const markerRef = useRef(null);
 
-
   // Get current user location
   useEffect(() => {
     if (navigator.geolocation) {
@@ -54,7 +55,9 @@ const Map = () => {
           const mapInstance = mapRef.current;
           if (mapInstance) {
             mapInstance.setView([latitude, longitude], 12);
-            markerRef.current = L.marker([latitude, longitude]).addTo(mapInstance);
+            markerRef.current = L.marker([latitude, longitude]).addTo(
+              mapInstance
+            );
           }
         },
         (error) => {
@@ -70,7 +73,7 @@ const Map = () => {
   useEffect(() => {
     const mapInstance = mapRef.current;
     if (mapInstance) {
-      mapInstance.on('click', (e) => {
+      mapInstance.on("click", (e) => {
         const { lat, lng } = e.latlng;
 
         L.marker([lat, lng]).addTo(mapInstance);
@@ -80,11 +83,8 @@ const Map = () => {
         }
 
         routingControlRef.current = L.Routing.control({
-          waypoints: [
-            L.latLng(position[0], position[1]),
-            L.latLng(lat, lng)
-          ],
-          routeWhileDragging: true
+          waypoints: [L.latLng(position[0], position[1]), L.latLng(lat, lng)],
+          routeWhileDragging: true,
         }).addTo(mapInstance);
 
         // Calculate the distance between current location and marked point
@@ -97,7 +97,7 @@ const Map = () => {
   }, [position]);
 
   // Handle payment button click
-  // const handlePayment = async () => 
+  // const handlePayment = async () =>
   //   {
   //       const totalAmount = (distance * rentPerKm).toFixed(2);
 
@@ -114,35 +114,32 @@ const Map = () => {
 
   const handlePayment = async () => {
     try {
-        const totalAmount = Math.round((distance * rentPerKm) * 100);
+      const totalAmount = Math.round(distance * rentPerKm * 100);
 
-        const stripe = await loadStripe('pk_test_51Q9gtF09C9oJJ9yv2j011OMgvLac4Ns1T2hFrrCJ6FB4B9USmNYY4z5H6KqN3vIc8wl2dy1uXFJ7jzc8ny9ewXy000C7UxHglE');
+      const stripe = await loadStripe(
+        "pk_test_51Q9gtF09C9oJJ9yv2j011OMgvLac4Ns1T2hFrrCJ6FB4B9USmNYY4z5H6KqN3vIc8wl2dy1uXFJ7jzc8ny9ewXy000C7UxHglE"
+      );
 
-        const response = await axios.post("http://localhost:5000/api/checkout-session", {
-            company,
-            image,
-            totalAmount: totalAmount / 100 
-        });
+      const response = await axios.post(API_URL + "/api/checkout-session", {
+        company,
+        image,
+        totalAmount: totalAmount / 100,
+      });
 
-        const { id } = response.data;
+      const { id } = response.data;
 
-        await stripe.redirectToCheckout({ sessionId: id });
+      await stripe.redirectToCheckout({ sessionId: id });
     } catch (error) {
-        console.error("Error during checkout session:", error);
+      console.error("Error during checkout session:", error);
     }
-};
-
-  
-
-
-
+  };
 
   return (
     <>
       <MapContainer
         center={position}
         zoom={zoom}
-        style={{ height: '100vh', width: '100%' }}
+        style={{ height: "100vh", width: "100%" }}
         ref={mapRef}
         whenCreated={(mapInstance) => {
           mapRef.current = mapInstance;
@@ -153,30 +150,39 @@ const Map = () => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
       </MapContainer>
-            <div style={{
-              position: 'absolute',
-              zIndex: '1000',
-              bottom: '20px',
-              left: '20px',
-              backgroundColor: 'white',
-              padding: '15px',
-              borderRadius: '10px',
-              boxShadow: '0px 0px 10px rgba(0,0,0,0.5)'
-            }}>
-              <h3 className="text-center">{company}</h3>
-              {image && <img src={image} alt="Company" style={{ width: '100px', height: 'auto', marginBottom: '10px' }} className='d-block mx-auto'/>}
+      <div
+        style={{
+          position: "absolute",
+          zIndex: "1000",
+          bottom: "20px",
+          left: "20px",
+          backgroundColor: "white",
+          padding: "15px",
+          borderRadius: "10px",
+          boxShadow: "0px 0px 10px rgba(0,0,0,0.5)",
+        }}
+      >
+        <h3 className="text-center">{company}</h3>
+        {image && (
+          <img
+            src={image}
+            alt="Company"
+            style={{ width: "100px", height: "auto", marginBottom: "10px" }}
+            className="d-block mx-auto"
+          />
+        )}
 
-              <div className="d-flex align-items-between justify-content-center">
-                <button 
-                  onClick={handlePayment} 
-                  disabled={distance === 0}
-                  className="btn btn-dark text-white btn-sm mt-2"
-                  >
-                  Pay
-                </button>
-                  <h2 className='mt-2 ms-2'>${(distance * rentPerKm).toFixed(2)}</h2>
-              </div>
-            </div>
+        <div className="d-flex align-items-between justify-content-center">
+          <button
+            onClick={handlePayment}
+            disabled={distance === 0}
+            className="btn btn-dark text-white btn-sm mt-2"
+          >
+            Pay
+          </button>
+          <h2 className="mt-2 ms-2">${(distance * rentPerKm).toFixed(2)}</h2>
+        </div>
+      </div>
     </>
   );
 };
