@@ -4,8 +4,9 @@
   "description": "",
   "main": "Backend/app.js",
   "scripts": {
-    "start": "nodemon Backend/app.js",
-    "dev": "npm run dev --prefix Frontend"
+    "build": "npm install && npm install --prefix Frontend && npm run build --prefix Frontend",
+    "start": "cross-env NODE_ENV=production node Backend/app.js",
+    "dev": "cross-env NODE_ENV=development nodemon Backend/app.js"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +25,7 @@
     "stripe": "^17.2.0"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "nodemon": "^3.1.9"
   }
 }

@@ -9,7 +9,8 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 // import {BsFillEnvelopeFill} from 'react-icons/bs'
 import { PiTruckFill } from "react-icons/pi";
 
-const API_URL = "http://localhost:5000";
+const API_URL =
+  import.meta.env.MODE === "production" ? "" : "http://localhost:5000";
 
 const Header = () => {
   // use the Context

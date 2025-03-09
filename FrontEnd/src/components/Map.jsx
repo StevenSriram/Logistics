@@ -4,7 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 
-const API_URL = "http://localhost:5000";
+const API_URL =
+  import.meta.env.MODE === "production" ? "" : "http://localhost:5000";
 
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";

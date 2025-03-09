@@ -4,7 +4,8 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, useNavigate } from "react-router-dom";
 
-const API_URL = "http://localhost:5000";
+const API_URL =
+  import.meta.env.MODE === "production" ? "" : "http://localhost:5000";
 
 const Login = () => {
   const [user, setUser] = useState({ email: "", pass: "" });

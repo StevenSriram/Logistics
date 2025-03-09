@@ -17,7 +17,8 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Admin.css";
 
-const API_URL = "http://localhost:5000";
+const API_URL =
+  import.meta.env.MODE === "production" ? "" : "http://localhost:5000";
 
 const AdminDashBoard = () => {
   const [adminDetail, setAdminDetails] = useState({ name: "", email: "" });

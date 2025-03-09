@@ -14,6 +14,8 @@ const adminRouter = require("./routes/adminRouter");
 const vehicleRouter = require("./routes/vehicleRouter");
 
 const app = express();
+// __dirname - path to current directory
+const __dirname = path.resolve();
 // JSON response
 app.use(express.json());
 // cookieParser for http-only-cookie
@@ -21,7 +23,7 @@ app.use(cookieParser());
 // Cross Origin Resource Sharing
 app.use(
   cors({
-    origin: "http://localhost:5500",
+    origin: "*",
     methods: ["GET", "POST"],
     credentials: true,
   })
@@ -43,6 +45,17 @@ mongoose
     console.log("DataBase Connected");
   })
   .catch(() => console.error("Error Occured"));
+
+// ! React App
+if (process.env.NODE_ENV === "production") {
+  // Serve static files from the React app
+  app.use(express.static(path.join(__dirname, "/FrontEnd/build")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "FrontEnd", "build", "index.html"));
+  });
+}
+// ! React App END
 
 // listen to port
 const port = process.env.PORT || 3000;

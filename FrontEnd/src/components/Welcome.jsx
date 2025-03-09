@@ -8,7 +8,8 @@ import Contact from "./Contact";
 import Footer from "./Footer";
 import { LoginContext } from "../contexts/LoginContext";
 
-const API_URL = "http://localhost:5000";
+const API_URL =
+  import.meta.env.MODE === "production" ? "" : "http://localhost:5000";
 
 const Welcome = () => {
   const { login, setLogin } = useContext(LoginContext);
