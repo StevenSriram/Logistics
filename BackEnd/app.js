@@ -14,8 +14,7 @@ const adminRouter = require("./routes/adminRouter");
 const vehicleRouter = require("./routes/vehicleRouter");
 
 const app = express();
-// __dirname - path to current directory
-const __dirname = path.resolve();
+
 // JSON response
 app.use(express.json());
 // cookieParser for http-only-cookie
@@ -49,10 +48,12 @@ mongoose
 // ! React App
 if (process.env.NODE_ENV === "production") {
   // Serve static files from the React app
-  app.use(express.static(path.join(__dirname, "/FrontEnd/build")));
+  app.use(express.static(path.join(__dirname, "/../FrontEnd/dist")));
 
   app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "FrontEnd", "build", "index.html"));
+    res.sendFile(
+      path.resolve(__dirname, "..", "FrontEnd", "dist", "index.html")
+    );
   });
 }
 // ! React App END
